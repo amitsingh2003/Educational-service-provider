@@ -1,28 +1,27 @@
-import BlogSection from "./components/BlogSection";
-import ContactSection from "./components/ContactSection";
-import ContactUsSection from "./components/ContactUsSection";
-import Footer from "./components/Footer";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import HeroCarousel from "./components/HeroCarousel";
-import OfferingSection from "./components/OfferingSection";
-import PremiumClubSection from "./components/PremiumClubSection";
-import SMLCLearningCafe from "./components/SMLCLearningCafe";
-import WhoWeAreSection from "./components/WhoWeAreSection";
+import Footer from "./components/Footer";
+
+import Home from "./pages/Home";
+import ScholarsmeritAbout from "./pages/About";
+import LeadershipTeamSection from "./components/LeadershipTeamSection";
+import ContactSection from "./components/Contact";
+import NewsletterSection from "./components/NewsletterSection";
 
 function App() {
   return (
-    <>
-      <Header></Header>
-      <HeroCarousel></HeroCarousel>
-      <WhoWeAreSection></WhoWeAreSection>
-      <PremiumClubSection></PremiumClubSection>
-      <SMLCLearningCafe></SMLCLearningCafe>
-      <ContactUsSection></ContactUsSection>
-      <OfferingSection></OfferingSection>
-      <ContactSection></ContactSection>
-      <BlogSection></BlogSection>
-      <Footer></Footer>
-    </>
+    <BrowserRouter>
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<ScholarsmeritAbout />} />
+        <Route path="/leadership" element={<LeadershipTeamSection />} />
+        <Route path="/news" element={<NewsletterSection />} />
+        <Route path="/contact" element={<ContactSection />} />
+       
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

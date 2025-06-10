@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
+
 import {
   Facebook,
   Instagram,
@@ -48,16 +50,16 @@ const Header = () => {
   }, []);
 
   const navigationItems = [
-    { name: "Home", href: "#home", hasDropdown: false },
+    { name: "Home", href: "/", hasDropdown: false },
     {
       name: "About Us",
-      href: "#about",
+      href: "/about",
       hasDropdown: true,
       type: "about",
       dropdownItems: [
         {
           name: "About Us",
-          href: "#about",
+          href: "/about",
           icon: Users,
           description:
             "Discover our mission, values, and journey toward transformative impact.",
@@ -65,21 +67,21 @@ const Header = () => {
         },
         {
           name: "Leadership Team",
-          href: "#leadership",
+          href: "/leadership",
           icon: UserCheck,
           description:
             "Meet our team guiding our strategy, innovation, and growth.",
         },
         {
           name: "News & Updates",
-          href: "#news",
+          href: "/news",
           icon: FileText,
           description:
             "Stay informed with our latest achievements, events, and announcements.",
         },
         {
           name: "Contact Us",
-          href: "#contact",
+          href: "/contact",
           icon: Phone,
           description:
             "Reach out for inquiries, collaborations, or support—let's connect today.",
@@ -507,8 +509,8 @@ const Header = () => {
               <div className="hidden lg:flex items-center space-x-1">
                 {navigationItems.map((item, index) => (
                   <div key={item.name} className="relative dropdown-container">
-                    <a
-                      href={item.href}
+                    <Link
+                      to={item.href}
                       className="relative flex items-center space-x-1 text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 py-3 px-4 rounded-lg hover:bg-orange-50 group"
                       onMouseEnter={() =>
                         item.hasDropdown && handleDropdownHover(index)
@@ -530,7 +532,7 @@ const Header = () => {
                           }`}
                         />
                       )}
-                    </a>
+                    </Link>
 
                     {/* Dropdown Menu */}
                     {item.hasDropdown && activeDropdown === index && (
