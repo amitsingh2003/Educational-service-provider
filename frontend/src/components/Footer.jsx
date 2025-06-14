@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   Facebook, 
@@ -39,6 +40,24 @@ const Footer = () => {
       transition: { duration: 0.6 }
     }
   };
+
+  // Quick Links matching Header navigation
+  const quickLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Leadership Team', href: '/leadership' },
+    { name: 'Contact Us', href: '/contact' },
+    { name: 'Careers', href: '/careers' }
+  ];
+
+  // Services and Other Links
+  const serviceLinks = [
+    { name: 'Mathlab', href: '/mathlab' },
+    { name: 'SM360', href: '/sm360' },
+    { name: '#taskone', href: '/taskone' },
+    { name: '#cloudone', href: '/cloudone' },
+    { name: 'News & Updates', href: '/news' }
+  ];
 
   return (
     <footer className="relative bg-slate-900 text-white overflow-hidden">
@@ -87,59 +106,94 @@ const Footer = () => {
           >
             <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
             <ul className="space-y-3">
-              {[
-                { name: 'About us', href: '#' },
-                { name: 'Blog', href: '#' },
-                { name: 'SMLC', href: '#' },
-                { name: 'Latest news', href: '#' },
-                { name: 'Contact', href: '#' }
-              ].map((link, index) => (
+              {quickLinks.map((link, index) => (
                 <motion.li 
                   key={link.name}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <a 
-                    href={link.href}
+                  <Link 
+                    to={link.href}
                     className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
                   >
                     <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
                     {link.name}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
             </ul>
           </motion.div>
 
-          {/* Other Links */}
+          {/* Services & Other Links */}
           <motion.div 
             className="lg:col-span-1"
             variants={itemVariants}
           >
-            <h3 className="text-lg font-semibold mb-6">Other Links</h3>
+            <h3 className="text-lg font-semibold mb-6">Our Services</h3>
             <ul className="space-y-3">
-              {[
-                { name: 'i-merit', href: '#' },
-                { name: '#taskone', href: '#' },
-                { name: '#cloudone', href: '#' },
-                { name: 'Math Lab', href: '#' },
-                { name: 'SM 360', href: '#' }
-              ].map((link, index) => (
+              {serviceLinks.map((link, index) => (
                 <motion.li 
                   key={link.name}
                   whileHover={{ x: 5 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <a 
-                    href={link.href}
-                    className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
-                  >
-                    <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
-                    {link.name}
-                  </a>
+                  {link.href.startsWith('/') ? (
+                    <Link 
+                      to={link.href}
+                      className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
+                    >
+                      <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a 
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
+                    >
+                      <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
+                      {link.name}
+                    </a>
+                  )}
                 </motion.li>
               ))}
             </ul>
+
+            {/* External Links */}
+            <div className="mt-6 pt-4 border-t border-gray-700">
+              <h4 className="text-sm font-medium mb-3 text-gray-400">External Links</h4>
+              <ul className="space-y-2">
+                <motion.li 
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <a 
+                    href="https://i-merit.com/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
+                  >
+                    <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
+                    i-merit
+                  </a>
+                </motion.li>
+                <motion.li 
+                  whileHover={{ x: 5 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <a 
+                    href="https://taskone.world/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center text-sm text-gray-300 hover:text-orange-500 transition-colors duration-300 group"
+                  >
+                    <ChevronRight className="w-4 h-4 mr-2 group-hover:text-orange-500 transition-colors duration-300" />
+                    #taskone
+                  </a>
+                </motion.li>
+              </ul>
+            </div>
           </motion.div>
 
           {/* Contact & Social */}
@@ -174,17 +228,20 @@ const Footer = () => {
               <h4 className="text-sm font-medium mb-4">Follow Us</h4>
               <div className="flex space-x-3">
                 {[
-                  { Icon: Facebook, href: 'https://www.facebook.com/scholarsmerit1/' },
-                  { Icon: Instagram, href: '#' },
-                  { Icon: Twitter, href: '#' },
-                  { Icon: Linkedin, href: '#' }
-                ].map(({ Icon, href }, index) => (
+                  { Icon: Facebook, href: 'https://www.facebook.com/scholarsmerit1/', label: 'Facebook' },
+                  { Icon: Instagram, href: '#instagram', label: 'Instagram' },
+                  { Icon: Twitter, href: '#twitter', label: 'Twitter' },
+                  { Icon: Linkedin, href: '#linkedin', label: 'LinkedIn' }
+                ].map(({ Icon, href, label }, index) => (
                   <motion.a
                     key={index}
                     href={href}
+                    target={href.startsWith('http') ? '_blank' : '_self'}
+                    rel={href.startsWith('http') ? 'noopener noreferrer' : ''}
                     className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300"
                     whileHover={{ scale: 1.1, rotate: 5 }}
                     whileTap={{ scale: 0.95 }}
+                    aria-label={label}
                   >
                     <Icon className="w-4 h-4" />
                   </motion.a>
@@ -201,9 +258,9 @@ const Footer = () => {
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-400">
-              Copyright © 2023 - 27{' '}
+              Copyright © 2023 - {new Date().getFullYear()}{' '}
               <a 
-                href="#" 
+                href="/" 
                 className="text-white hover:text-orange-500 transition-colors duration-300 underline"
               >
                 Scholars Merit Online Pvt. Ltd.
@@ -212,18 +269,18 @@ const Footer = () => {
             </div>
             <div className="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
               {[
-                'Privacy Policy',
-                'Terms and Conditions',
-                'Shipping and Delivery',
-                'Refund Policy'
+                { name: 'Privacy Policy', href: '/privacy-policy' },
+                { name: 'Terms and Conditions', href: '/terms-conditions' },
+                { name: 'Shipping and Delivery', href: '/shipping-delivery' },
+                { name: 'Refund Policy', href: '/refund-policy' }
               ].map((link, index) => (
-                <a
-                  key={link}
-                  href="#"
+                <Link
+                  key={link.name}
+                  to={link.href}
                   className="text-gray-400 hover:text-orange-500 transition-colors duration-300"
                 >
-                  {link}
-                </a>
+                  {link.name}
+                </Link>
               ))}
             </div>
           </div>
@@ -239,6 +296,7 @@ const Footer = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1 }}
+        aria-label="Scroll to top"
       >
         <motion.div
           animate={{ y: [0, -2, 0] }}
