@@ -27,6 +27,7 @@ const Header = () => {
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
   const dropdownTimeoutRef = useRef(null);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -88,16 +89,16 @@ const Header = () => {
         },
       ],
     },
-    { name: "i-merit", href: "#i-merit", hasDropdown: false },
+    { name: "i-merit", href: "https://i-merit.com/", hasDropdown: false },
     {
       name: "Scholar Services",
-      href: "#scholar-services",
+      href: "/scholar-services",
       hasDropdown: true,
       type: "scholar",
       dropdownItems: [
         {
           name: "Mathlab",
-          href: "#mathlab",
+          href: "/mathlab",
           icon: Calculator,
           description:
             "Interactive platform offering transformative math learning for all skill levels.",
@@ -105,7 +106,7 @@ const Header = () => {
         },
         {
           name: "SM360",
-          href: "#sm360",
+          href: "/sm360",
           icon: GraduationCap,
           description:
             "Empowering education through innovation for students and educators.",
@@ -114,13 +115,13 @@ const Header = () => {
     },
     {
       name: "Professional Services",
-      href: "#professional-services",
+      href: "/professional-services",
       hasDropdown: true,
       type: "professional",
       dropdownItems: [
         {
           name: "#taskone",
-          href: "#taskone",
+          href: "/taskone",
           icon: Hash,
           description:
             "Top-tier development and support services with flexible, on-demand pricing.",
@@ -128,14 +129,14 @@ const Header = () => {
         },
         {
           name: "#cloudone",
-          href: "#cloudone",
+          href: "/cloudone",
           icon: Cloud,
           description:
             "Cloud infrastructure management with procurement, support, and optimization services.",
         },
       ],
     },
-    { name: "Careers", href: "#careers", hasDropdown: false },
+    { name: "Careers", href: "/careers", hasDropdown: false },
     {
       name: "Linked Sites",
       href: "#linked-sites",
@@ -144,7 +145,7 @@ const Header = () => {
       dropdownItems: [
         {
           name: "#taskone",
-          href: "#taskone-link",
+          href: "https://taskone.world/",
           icon: Hash,
           description: "iTechWorks",
         },
@@ -552,7 +553,7 @@ const Header = () => {
               >
                 <div className="relative w-6 h-6">
                   <Menu
-                    className={`absolute inset-0 w-6 h-6 transition-all durat ion-300 ${
+                    className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
                       isMobileMenuOpen
                         ? "opacity-0 rotate-180"
                         : "opacity-100 rotate-0"
@@ -584,75 +585,137 @@ const Header = () => {
                   key={item.name}
                   className="border-b border-gray-100 last:border-b-0"
                 >
-                  <button
-                    className="flex items-center justify-between w-full text-left py-4 text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 group"
-                    onClick={() => {
-                      if (item.hasDropdown) {
-                        setActiveDropdown(
-                          activeDropdown === index ? null : index
-                        );
-                      } else {
-                        setIsMobileMenuOpen(false);
-                      }
-                    }}
-                  >
-                    <span className="flex items-center space-x-3">
-                      <span>{item.name}</span>
-                    </span>
-                    {item.hasDropdown && (
-                      <ChevronDown
-                        className={`w-4 h-4 transition-all duration-300 group-hover:text-orange-500 ${
-                          activeDropdown === index
-                            ? "rotate-180 text-orange-500"
-                            : ""
-                        }`}
-                      />
-                    )}
-                  </button>
+                  {!item.hasDropdown ? (
+                    item.href.startsWith("http") ? (
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-between w-full text-left py-4 text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 group"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <span className="flex items-center space-x-3">
+                          <span>{item.name}</span>
+                        </span>
+                      </a>
+                    ) : (
+                      <Link
+                        to={item.href}
+                        className="flex items-center justify-between w-full text-left py-4 text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 group"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <span className="flex items-center space-x-3">
+                          <span>{item.name}</span>
+                        </span>
+                      </Link>
+                    )
+                  ) : (
+                    <>
+                      <button
+                        className="flex items-center justify-between w-full text-left py-4 text-gray-700 hover:text-orange-500 font-medium transition-all duration-300 group"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          setMobileDropdownOpen(
+                            mobileDropdownOpen === index ? null : index
+                          );
+                        }}
+                      >
+                        <span className="flex items-center space-x-3">
+                          <span>{item.name}</span>
+                        </span>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-all duration-300 group-hover:text-orange-500 ${
+                            mobileDropdownOpen === index
+                              ? "rotate-180 text-orange-500"
+                              : ""
+                          }`}
+                        />
+                      </button>
 
-                  {/* Mobile Dropdown */}
-                  {item.hasDropdown && (
-                    <div
-                      className={`transition-all duration-300 overflow-hidden ${
-                        activeDropdown === index
-                          ? "max-h-screen pb-4"
-                          : "max-h-0"
-                      }`}
-                    >
-                      <div className="pl-4 space-y-2">
-                        {item.dropdownItems?.map((dropdownItem, dropIndex) => (
-                          <a
-                            key={dropdownItem.name}
-                            href={dropdownItem.href}
-                            className="flex items-start space-x-3 py-3 px-4 text-sm text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-all duration-300 group"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                            style={{
-                              animationDelay: `${dropIndex * 50}ms`,
-                              animation:
-                                activeDropdown === index
-                                  ? "slideInUp 0.3s ease-out forwards"
-                                  : "none",
-                            }}
-                          >
-                            <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-orange-500 transition-all duration-300 flex-shrink-0">
-                              {dropdownItem.icon ? (
-                                <dropdownItem.icon className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
-                              ) : (
-                                <Hash className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
-                              )}
-                            </div>
-                            <div>
-                              <div className="font-medium group-hover:text-orange-600 transition-colors duration-300">
-                                {dropdownItem.name}
-                              </div>
-                              <div className="text-xs text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300">
-                                {dropdownItem.description}
-                              </div>
-                            </div>
-                          </a>
-                        ))}
+                      {/* Mobile Dropdown */}
+                      <div
+                        className={`transition-all duration-300 overflow-hidden ${
+                          mobileDropdownOpen === index
+                            ? "max-h-screen pb-4"
+                            : "max-h-0"
+                        }`}
+                      >
+                        <div className="pl-4 space-y-2">
+                          {item.dropdownItems?.map((dropdownItem, dropIndex) =>
+                            dropdownItem.href.startsWith("http") ? (
+                              <a
+                                key={dropdownItem.name}
+                                href={dropdownItem.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-start space-x-3 py-3 px-4 text-sm text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-all duration-300 group"
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  setMobileDropdownOpen(null);
+                                }}
+                                style={{
+                                  animationDelay: `${dropIndex * 50}ms`,
+                                  animation:
+                                    mobileDropdownOpen === index
+                                      ? "slideInUp 0.3s ease-out forwards"
+                                      : "none",
+                                }}
+                              >
+                                <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-orange-500 transition-all duration-300 flex-shrink-0">
+                                  {dropdownItem.icon ? (
+                                    <dropdownItem.icon className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                                  ) : (
+                                    <Hash className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="font-medium group-hover:text-orange-600 transition-colors duration-300">
+                                    {dropdownItem.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300">
+                                    {dropdownItem.description}
+                                  </div>
+                                </div>
+                              </a>
+                            ) : (
+                              <Link
+                                key={dropdownItem.name}
+                                to={dropdownItem.href}
+                                className="flex items-start space-x-3 py-3 px-4 text-sm text-gray-600 hover:text-orange-500 hover:bg-orange-50 rounded-lg transition-all duration-300 group"
+                                onClick={() => {
+                                  setIsMobileMenuOpen(false);
+                                  setMobileDropdownOpen(null);
+                                }}
+                                style={{
+                                  animationDelay: `${dropIndex * 50}ms`,
+                                  animation:
+                                    mobileDropdownOpen === index
+                                      ? "slideInUp 0.3s ease-out forwards"
+                                      : "none",
+                                }}
+                              >
+                                <div className="p-2 bg-gray-100 rounded-lg group-hover:bg-orange-500 transition-all duration-300 flex-shrink-0">
+                                  {dropdownItem.icon ? (
+                                    <dropdownItem.icon className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                                  ) : (
+                                    <Hash className="w-4 h-4 text-gray-600 group-hover:text-white transition-colors duration-300" />
+                                  )}
+                                </div>
+                                <div>
+                                  <div className="font-medium group-hover:text-orange-600 transition-colors duration-300">
+                                    {dropdownItem.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500 mt-1 group-hover:text-gray-600 transition-colors duration-300">
+                                    {dropdownItem.description}
+                                  </div>
+                                </div>
+                              </Link>
+                            )
+                          )}
+                        </div>
                       </div>
-                    </div>
+                    </>
                   )}
                 </div>
               ))}
@@ -671,9 +734,9 @@ const Header = () => {
       {/* Spacer to prevent content overlap */}
       <div
         className={`transition-all duration-500 ${
-          isScrolled ? "h-20" : "h-32"
+          isScrolled ? "h-20" : "h-32 md:h-32 lg:h-32"
         }`}
-      ></div>
+      />
     </>
   );
 };
