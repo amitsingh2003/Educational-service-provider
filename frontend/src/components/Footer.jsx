@@ -11,6 +11,7 @@ import {
   ArrowUp,
   ChevronRight
 } from 'lucide-react';
+import scsLogo from "../assets/logo.png"
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -84,16 +85,16 @@ const Footer = () => {
           >
             <div className="mb-6">
               <img 
-                src="https://www.scholarsmerit.com/assets/images/logo.svg" 
+                src={scsLogo} 
                 alt="Scholars Merit Online" 
-                className="h-12 w-auto mb-4 filter brightness-0 invert"
+                className="h-29 w-auto mb-4 filter brightness-0 invert"
               />
               <p className="text-sm text-gray-300 leading-relaxed">
                 Transcend Professional Excellence
               </p>
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
-              Scholars Merit is a dynamic online platform committed to fostering holistic 
+              SCS Globals is a dynamic online platform committed to fostering holistic 
               growth in education and professional spheres of an individual leading to their 
               evolution from student life to corporate life.
             </p>

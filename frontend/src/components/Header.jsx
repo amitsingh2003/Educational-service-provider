@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import scsLogo from "../assets/logo.png"
 
 import {
   Facebook,
@@ -497,7 +498,7 @@ const Header = () => {
               <div className="flex items-center">
                 <a href="#home" className="block">
                   <img
-                    src="https://www.scholarsmerit.com/assets/images/logo-3.svg"
+                    src={scsLogo}
                     alt="Scholars Merit Online"
                     className={`transition-all duration-500 hover:scale-105 ${
                       isScrolled ? "h-10" : "h-12"

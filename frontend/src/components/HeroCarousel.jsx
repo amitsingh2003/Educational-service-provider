@@ -15,8 +15,8 @@ const HeroSection = () => {
       subtitle: "Empowering Future Professionals",
       description:
         "Transform your career trajectory with our comprehensive platform designed to bridge the gap between academic excellence and industry readiness.",
-      image:
-        "https://images.unsplash.com/photo-1665686308827-eb62e4f6604d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      video:
+        "https://videos.pexels.com/video-files/6774633/6774633-uhd_2560_1440_30fps.mp4",
       stats: { number: "10K+", label: "Graduates Trained" },
     },
     {
@@ -25,8 +25,8 @@ const HeroSection = () => {
       subtitle: "Next-Gen Outsourcing Solutions",
       description:
         "Revolutionary pay-as-you-go development services that scale with your business needs without the overhead of traditional outsourcing.",
-      image:
-        "https://images.unsplash.com/photo-1525130413817-d45c1d127c42?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      video:
+        "https://videos.pexels.com/video-files/8425706/8425706-uhd_2560_1440_25fps.mp4", // team discussion
       stats: { number: "500+", label: "Projects Delivered" },
     },
     {
@@ -35,8 +35,8 @@ const HeroSection = () => {
       subtitle: "Interactive Learning Experience",
       description:
         "State-of-the-art mathematical laboratory equipped with cutting-edge tools for hands-on exploration and deep conceptual understanding.",
-      image:
-        "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      video:
+        "https://videos.pexels.com/video-files/3196425/3196425-uhd_2560_1440_25fps.mp4", // kids in STEM lab
       stats: { number: "95%", label: "Success Rate" },
     },
     {
@@ -45,8 +45,8 @@ const HeroSection = () => {
       subtitle: "Cloud Infrastructure Excellence",
       description:
         "Comprehensive cloud management services that optimize performance, reduce costs, and ensure scalable infrastructure solutions.",
-      image:
-        "https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      video:
+        "https://videos.pexels.com/video-files/8716587/8716587-uhd_2560_1440_25fps.mp4", // cloud computing
       stats: { number: "99.9%", label: "Uptime Guarantee" },
     },
     {
@@ -55,8 +55,8 @@ const HeroSection = () => {
       subtitle: "Complete Educational Revolution",
       description:
         "Comprehensive educational bundle that transforms traditional learning through innovative methodologies and practical applications.",
-      image:
-        "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      video:
+        "https://videos.pexels.com/video-files/8141400/8141400-uhd_2560_1440_25fps.mp4", // smart classroom
       stats: { number: "360°", label: "Learning Approach" },
     },
   ];
@@ -109,36 +109,98 @@ const HeroSection = () => {
         ></div>
       </div>
 
-      {/* Background Images with Advanced Transitions */}
-      {slides.map((slide, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-all duration-[1500ms] ease-in-out ${
-            index === currentSlide
-              ? "opacity-100 scale-100"
-              : index === (currentSlide - 1 + slides.length) % slides.length
-              ? "opacity-30 scale-105"
-              : "opacity-0 scale-95"
-          }`}
-        >
-          <div
-            className="w-full h-full bg-cover bg-center bg-no-repeat"
-            style={{
-              backgroundImage: `url(${slide.image})`,
-              filter: "grayscale(30%) brightness(0.4) contrast(1.2)",
-              transform: `scale(${
-                index === currentSlide ? "1.05" : "1"
-              }) translate(${mousePos.x * 10}px, ${mousePos.y * 5}px)`,
-              transition: "transform 0.5s ease-out",
-            }}
-          />
+      {/* Background Videos with Advanced Transitions */}
+      {slides.map((slide, index) => {
+        const isActive = index === currentSlide;
+        const isPrevious =
+          index === (currentSlide - 1 + slides.length) % slides.length;
+        const isNext = index === (currentSlide + 1) % slides.length;
 
-          {/* Advanced Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-900/20 via-transparent to-black/30"></div>
-        </div>
-      ))}
+        return (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-all duration-[2000ms] ease-out ${
+              isActive
+                ? "opacity-100 scale-100 z-10"
+                : isPrevious || isNext
+                ? "opacity-20 scale-105 z-5"
+                : "opacity-0 scale-95 z-0"
+            }`}
+            style={{
+              transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            <div className="relative w-full h-full overflow-hidden">
+              <video
+                key={`${slide.video}-${index}`} // Force re-render when needed
+                className="w-full h-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                style={{
+                  filter: isActive
+                    ? "grayscale(60%) brightness(0.8) contrast(1.15) saturate(0.9)"
+                    : "grayscale(80%) brightness(0.6) contrast(1.0)",
+                  transform: `scale(${
+                    isActive ? "1.02" : "1.05"
+                  }) translate3d(${mousePos.x * 8}px, ${mousePos.y * 4}px, 0)`,
+                  transition:
+                    "all 0.8s cubic-bezier(0.4, 0, 0.2, 1), filter 2s ease-out",
+                  willChange: "transform, filter",
+                }}
+              >
+                <source src={slide.video} type="video/mp4" />
+              </video>
+
+              {/* Enhanced Multi-layer Gradient System */}
+              {/* Base darkness layer */}
+              <div
+                className="absolute inset-0 bg-black transition-opacity duration-2000"
+                style={{
+                  opacity: isActive ? 0.3 : 0.6,
+                }}
+              />
+
+              {/* Dynamic gradient based on slide position */}
+              <div
+                className={`absolute inset-0 transition-all duration-2000 ${
+                  isActive
+                    ? "bg-gradient-to-r from-black/50 via-black/30 to-transparent"
+                    : "bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+                }`}
+              />
+
+              {/* Bottom fade for text readability */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+
+              {/* Interactive color accent */}
+              <div
+                className="absolute inset-0 transition-all duration-1000"
+                style={{
+                  background: `radial-gradient(circle at ${mousePos.x * 100}% ${
+                    mousePos.y * 100
+                  }%, 
+              rgba(251, 146, 60, ${isActive ? 0.08 : 0.03}) 0%, 
+              transparent 50%)`,
+                }}
+              />
+
+              {/* Subtle vignette effect */}
+              <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-black/40" />
+            </div>
+
+            {/* Smooth edge blur for non-active slides */}
+            {!isActive && (
+              <div
+                className="absolute inset-0 backdrop-blur-[1px] transition-all duration-2000"
+                style={{ opacity: 0.3 }}
+              />
+            )}
+          </div>
+        );
+      })}
 
       {/* Floating Elements */}
       <div className="absolute inset-0 pointer-events-none">
@@ -173,9 +235,7 @@ const HeroSection = () => {
                       : "translate-y-8 opacity-0"
                   }`}
                   style={{ transitionDelay: "200ms" }}
-                >
-                
-                </div>
+                ></div>
               </div>
 
               {/* Main Title */}
@@ -229,7 +289,6 @@ const HeroSection = () => {
                 </p>
               </div>
 
-            
               {/* Action Buttons */}
               <div className="overflow-hidden">
                 <div
