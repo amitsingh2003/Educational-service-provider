@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -14,6 +14,8 @@ import {
 import scsLogo from "../assets/logo.png"
 
 const Footer = () => {
+  const [hoveredSocial, setHoveredSocial] = useState(null);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -58,6 +60,34 @@ const Footer = () => {
     { name: '#taskone', href: '/taskone' },
     { name: '#cloudone', href: '/cloudone' },
     { name: 'News & Updates', href: '/news' }
+  ];
+
+  // Social Media Links with gradients
+  const socialLinks = [
+    { 
+      icon: Facebook, 
+      href: 'https://www.facebook.com/scholarsmerit1/', 
+      label: 'Facebook',
+      gradient: 'from-blue-600 to-blue-800'
+    },
+    { 
+      icon: Instagram, 
+      href: '#instagram', 
+      label: 'Instagram',
+      gradient: 'from-pink-500 via-red-500 to-yellow-500'
+    },
+    { 
+      icon: Twitter, 
+      href: '#twitter', 
+      label: 'Twitter',
+      gradient: 'from-cyan-400 to-blue-500'
+    },
+    { 
+      icon: Linkedin, 
+      href: '#linkedin', 
+      label: 'LinkedIn',
+      gradient: 'from-blue-600 to-blue-800'
+    }
   ];
 
   return (
@@ -197,7 +227,7 @@ const Footer = () => {
             </div>
           </motion.div>
 
-          {/* Contact & Social */}
+          {/* Contact & Enhanced Social Media */}
           <motion.div 
             className="lg:col-span-1"
             variants={itemVariants}
@@ -224,28 +254,65 @@ const Footer = () => {
               </div>
             </div>
 
-            {/* Social Media */}
-            <div>
-              <h4 className="text-sm font-medium mb-4">Follow Us</h4>
-              <div className="flex space-x-3">
-                {[
-                  { Icon: Facebook, href: 'https://www.facebook.com/scholarsmerit1/', label: 'Facebook' },
-                  { Icon: Instagram, href: '#instagram', label: 'Instagram' },
-                  { Icon: Twitter, href: '#twitter', label: 'Twitter' },
-                  { Icon: Linkedin, href: '#linkedin', label: 'LinkedIn' }
-                ].map(({ Icon, href, label }, index) => (
-                  <motion.a
+            {/* Enhanced Neumorphic Social Media */}
+            <div className="flex flex-col items-center gap-6">
+              <span className="text-xl font-bold bg-gradient-to-r from-gray-200 to-gray-400 bg-clip-text text-transparent">
+                Connect With Us
+              </span>
+              <div className="flex gap-4">
+                {socialLinks.map((social, index) => (
+                  <motion.div
                     key={index}
-                    href={href}
-                    target={href.startsWith('http') ? '_blank' : '_self'}
-                    rel={href.startsWith('http') ? 'noopener noreferrer' : ''}
-                    className="w-10 h-10 bg-gray-800 rounded-full flex items-center justify-center text-gray-300 hover:bg-orange-500 hover:text-white transition-all duration-300"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="relative group"
+                    onMouseEnter={() => setHoveredSocial(index)}
+                    onMouseLeave={() => setHoveredSocial(null)}
+                    whileHover={{ scale: 1.1, rotate: 12 }}
                     whileTap={{ scale: 0.95 }}
-                    aria-label={label}
+                    transition={{ duration: 0.3 }}
                   >
-                    <Icon className="w-4 h-4" />
-                  </motion.a>
+                    <a
+                      href={social.href}
+                      target={social.href.startsWith('http') ? '_blank' : '_self'}
+                      rel={social.href.startsWith('http') ? 'noopener noreferrer' : ''}
+                      className={`w-14 h-14 bg-gray-800/60 backdrop-blur-lg rounded-2xl shadow-[8px_8px_16px_rgba(0,0,0,0.4),-8px_-8px_16px_rgba(255,255,255,0.05)] hover:shadow-[12px_12px_24px_rgba(0,0,0,0.5),-12px_-12px_24px_rgba(255,255,255,0.08)] flex items-center justify-center transition-all duration-500 border border-gray-700/40 group relative overflow-hidden`}
+                      aria-label={social.label}
+                    >
+                      <social.icon
+                        className={`w-6 h-6 transition-all duration-300 z-10 relative ${
+                          hoveredSocial === index
+                            ? "text-white"
+                            : "text-gray-300"
+                        }`}
+                      />
+                      
+                      {/* Gradient Background on Hover */}
+                      <motion.div
+                        className={`absolute inset-0 bg-gradient-to-br ${social.gradient} rounded-2xl transition-all duration-300 ${
+                          hoveredSocial === index ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: hoveredSocial === index ? 1 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      
+                      {/* Shine Effect */}
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                        style={{ width: '200%' }}
+                      />
+                    </a>
+                    
+                    {/* Glow Effect */}
+                    {hoveredSocial === index && (
+                      <motion.div
+                        className={`absolute inset-0 bg-gradient-to-br ${social.gradient} rounded-2xl blur-lg opacity-50 -z-10`}
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1.2, opacity: 0.5 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    )}
+                  </motion.div>
                 ))}
               </div>
             </div>
@@ -288,23 +355,81 @@ const Footer = () => {
         </motion.div>
       </motion.div>
 
-      {/* Scroll to Top Button */}
+      {/* Enhanced Animated Scroll to Top Button */}
       <motion.button
         onClick={scrollToTop}
-        className="fixed bottom-8 right-8 w-12 h-12 bg-orange-500 text-white rounded-full flex items-center justify-center shadow-lg hover:bg-orange-600 transition-colors duration-300 z-50"
-        whileHover={{ scale: 1.1 }}
+        className="fixed bottom-8 right-8 w-14 h-14 bg-gradient-to-br from-orange-500 to-orange-600 text-white rounded-2xl flex items-center justify-center shadow-[8px_8px_16px_rgba(255,165,0,0.3),-8px_-8px_16px_rgba(255,255,255,0.1)] hover:shadow-[12px_12px_24px_rgba(255,165,0,0.4),-12px_-12px_24px_rgba(255,255,255,0.15)] transition-all duration-300 z-50 backdrop-blur-lg border border-orange-400/30 group overflow-hidden"
+        whileHover={{ 
+          scale: 1.1, 
+          rotate: [0, -10, 10, 0],
+          boxShadow: "0 0 30px rgba(255,165,0,0.6)"
+        }}
         whileTap={{ scale: 0.9 }}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1 }}
+        initial={{ opacity: 0, y: 20, rotate: 0 }}
+        animate={{ 
+          opacity: 1, 
+          y: 0,
+          rotate: [0, 5, -5, 0]
+        }}
+        transition={{ 
+          delay: 1,
+          rotate: {
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }
+        }}
         aria-label="Scroll to top"
       >
+        {/* Gradient Background Animation */}
         <motion.div
-          animate={{ y: [0, -2, 0] }}
-          transition={{ duration: 1.5, repeat: Infinity }}
+          className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-2xl"
+          animate={{
+            background: [
+              "linear-gradient(135deg, #f97316, #ea580c)",
+              "linear-gradient(135deg, #ea580c, #dc2626)",
+              "linear-gradient(135deg, #dc2626, #f97316)",
+              "linear-gradient(135deg, #f97316, #ea580c)"
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        />
+        
+        {/* Arrow with Bounce Animation */}
+        <motion.div
+          animate={{ 
+            y: [0, -3, 0],
+            rotate: [0, 10, -10, 0]
+          }}
+          transition={{ 
+            duration: 1.5, 
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          className="relative z-10"
         >
-          <ArrowUp className="w-5 h-5" />
+          <ArrowUp className="w-6 h-6 filter drop-shadow-sm" />
         </motion.div>
+        
+        {/* Shine Effect */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700 rounded-2xl"
+          style={{ width: '200%' }}
+        />
+        
+        {/* Pulse Ring */}
+        <motion.div
+          className="absolute inset-0 border-2 border-white/30 rounded-2xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.5, 0, 0.5]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
       </motion.button>
     </footer>
   );
